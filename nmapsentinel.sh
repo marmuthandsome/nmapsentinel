@@ -15,6 +15,12 @@ main() {
     parser() {
         local script_name="$0"
         cat <<EOF
+
+        
+█▀▀▄ █▀▄▀█ █▀▀█ █▀▀█ ▒█▀▀▀█ █▀▀ █▀▀▄ ▀▀█▀▀ ░▀░ █▀▀▄ █▀▀ █░░ 
+█░░█ █░▀░█ █▄▄█ █░░█ ░▀▀▀▄▄ █▀▀ █░░█ ░░█░░ ▀█▀ █░░█ █▀▀ █░░ 
+▀░░▀ ▀░░░▀ ▀░░▀ █▀▀▀ ▒█▄▄▄█ ▀▀▀ ▀░░▀ ░░▀░░ ▀▀▀ ▀░░▀ ▀▀▀ ▀▀▀
+
 Usage: $script_name [options] input_file
 
 Options:
@@ -195,6 +201,14 @@ EOF
     fi
 
     # Execute the Nmap command
+    echo "
+█▀▀▄ █▀▄▀█ █▀▀█ █▀▀█ ▒█▀▀▀█ █▀▀ █▀▀▄ ▀▀█▀▀ ░▀░ █▀▀▄ █▀▀ █░░ 
+█░░█ █░▀░█ █▄▄█ █░░█ ░▀▀▀▄▄ █▀▀ █░░█ ░░█░░ ▀█▀ █░░█ █▀▀ █░░ 
+▀░░▀ ▀░░░▀ ▀░░▀ █▀▀▀ ▒█▄▄▄█ ▀▀▀ ▀░░▀ ░░▀░░ ▀▀▀ ▀░░▀ ▀▀▀ ▀▀▀"
+    echo ""
+    echo "Created by MarmutHandsome"
+    echo "Version 1.0"
+    echo ""
     echo "Starting!!!"
     # echo "Running the following Nmap command:"
     # echo "$command"
