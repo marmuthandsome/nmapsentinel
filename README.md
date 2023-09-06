@@ -58,13 +58,13 @@ Example:
 1. Clone or download this repository to your local machine.
 
 ```bash
-git clone https://github.com/yourusername/nmap-tool.git
+git clone https://github.com/nieshakenzie/nmapsentinel.git
 ```
 
 2. Make the script executable:
 
 ```bash
-chmod +x nmap_tool.sh
+chmod +x nmapsentinel.sh
 ```
 
 #### Contributing
