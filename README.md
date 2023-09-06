@@ -43,10 +43,10 @@ Options:
     --port-specific PORT     Specify a specific port to scan (e.g., 21, 22, 23, etc.)
 
 Example:
-    ./nmap_tool.sh --fast-scan input.txt
-    ./nmap_tool.sh --full-scan input.txt
-    ./nmap_tool.sh --port 80 input.txt
-    ./nmap_tool.sh --port-specific 22 input.txt
+    ./nmapsentinel.sh --fast-scan input.txt
+    ./nmapsentinel.sh --full-scan input.txt
+    ./nmapsentinel.sh --port 80 input.txt
+    ./nmapsentinel.sh --port-specific 22 input.txt
 ```
 
 #### Prerequisites
@@ -71,12 +71,3 @@ chmod +x nmapsentinel.sh
 #### Contributing
 
 Contributions are welcome! If you have suggestions, feature requests, or bug reports, please open an issue or create a pull request.
-
-#### License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-```
-
-Replace `"https://github.com/yourusername/nmap-tool.git"` with the actual URL of your repository.
-
-Make sure to provide clear instructions on how to use your tool, including installation steps and any prerequisites. You can also include information on how others can contribute to your project if you want to make it an open-source project.
