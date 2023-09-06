@@ -29,6 +29,7 @@ Options:
     --fast-scan              Perform a fast scan
     --full-scan              Perform a full scan
     --full-scan-slower       Perform a slower full scan
+    --full-vuln              Perform a full scan with vuln
     --ftp                    Perform a scanning port 21
     --ssh                    Perform a scanning port 22
     --telnet                 Perform a scanning port 23
@@ -55,6 +56,7 @@ EOF
     local fast_scan
     local full_scan
     local full_scan_slower
+    local full_vuln
     local port_specific
     local ssh
     local ftp
@@ -89,6 +91,10 @@ EOF
                 ;;
             --full-scan-slower)
                 full_scan_slower=true
+                shift
+                ;;
+            --full-vuln)
+                full_vuln=true
                 shift
                 ;;
             --ftp)
@@ -166,6 +172,8 @@ EOF
         command="sudo nmap -sV -sC -O -T4 -n -Pn -p- -oA fullfastscan -iL $input_file -oN fullfastscan.txt -vv"
     elif [ "$full_scan_slower" = true ]; then
         command="sudo nmap -sV -sC -O -p- -n -Pn -oA fullscan -iL $input_file -oN fullscan.txt -vv"
+    elif [ "$full_vuln" = true ]; then
+        command="sudo nmap -sV -sC -O -p- -n -Pn -oA fullscan --script=vulners --script=vuln -iL $input_file -oN fullscan.txt -vv"
     elif [ "$ftp" = true ]; then
         command="sudo nmap -sV -p21 -sC -A --script ftp-* -iL $input_file -oN ftp.txt -vv"
     elif [ "$ssh" = true ]; then
