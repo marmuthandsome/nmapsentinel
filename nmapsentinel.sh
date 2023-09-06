@@ -195,7 +195,8 @@ EOF
     fi
 
     # Execute the Nmap command
-    echo "Running the following Nmap command:"
+    echo "Starting!!!"
+    # echo "Running the following Nmap command:"
     # echo "$command"
     eval "$command"
 }
