@@ -28,8 +28,9 @@ Options:
     -p, --port PORT          Specify a specific port to scan
     --fast-scan              Perform a fast scan
     --full-scan              Perform a full scan
-    --full-scan-slower       Perform a slower full scan
-    --full-vuln              Perform a full scan with vuln
+    --full-scan-slower       Perform a slower full scan (Recommended)
+    --full-vuln              Perform a full scan with vuln (Recommended)
+    --full-vuln-extras       Perform a full scan with extras vuln (Long Time)
     --ftp                    Perform a scanning port 21
     --ssh                    Perform a scanning port 22
     --telnet                 Perform a scanning port 23
@@ -57,6 +58,7 @@ EOF
     local full_scan
     local full_scan_slower
     local full_vuln
+    local full_vuln_extras
     local port_specific
     local ssh
     local ftp
@@ -95,6 +97,10 @@ EOF
                 ;;
             --full-vuln)
                 full_vuln=true
+                shift
+                ;;
+            --full-vuln-extras)
+                full_vuln_extras=true
                 shift
                 ;;
             --ftp)
@@ -173,11 +179,13 @@ EOF
     elif [ "$full_scan_slower" = true ]; then
         command="sudo nmap -sV -sC -O -p- -n -Pn -oA fullscan -iL $input_file -oN fullscan.txt -vv"
     elif [ "$full_vuln" = true ]; then
-        command="sudo nmap -sV -sC -O -p- -n -Pn -oA fullscan --script=vulners --script=vuln -iL $input_file -oN vuln.txt -vv"
+        command="sudo nmap -sV -sC -O -T4 -Pn -oA fullscan --script=vulners --script=vuln -iL $input_file -oN vuln.txt -vv"
+    elif [ "$full_vuln_extras" = true ]; then
+        command="sudo nmap -sV -sC -O -p- -n -Pn -oA fullscan --script=vuln --script=vulners -iL $input_file -oN vuln_extra.txt -vv"
     elif [ "$ftp" = true ]; then
         command="sudo nmap -sV -p21 -sC -A --script ftp-* -iL $input_file -oN ftp.txt -vv"
     elif [ "$ssh" = true ]; then
-        command="sudo nmap -p22 -iL {file} -sC -sV --script ssh2-enum-algos --script ssh-hostkey --script-args ssh_hostkey=full --script ssh-auth-methods --script-args="ssh.user=root" -iL $input_file -oN ssh.txt -vv"
+        command="sudo nmap -p22 -sC -sV --script ssh2-enum-algos --script ssh-hostkey --script-args ssh_hostkey=full --script ssh-auth-methods --script-args="ssh.user=root" -iL $input_file -oN ssh.txt -vv"
     elif [ "$telnet" = true ]; then
         command="sudo nmap -n -sV -Pn --script "'*telnet* and safe'" -p 23 -iL $input_file -oN telnet.txt -vv"
     elif [ "$smtp" = true ]; then
