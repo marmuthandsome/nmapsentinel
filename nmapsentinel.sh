@@ -179,7 +179,7 @@ EOF
     elif [ "$full_scan_slower" = true ]; then
         command="sudo nmap -sV -sC -O -p- -n -Pn -oA fullscan -iL $input_file -oN fullscan.txt -vv"
     elif [ "$full_vuln" = true ]; then
-        command="sudo nmap -sV -sC -O -T4 -Pn -oA fullscan --script=vulners --script=vuln -iL $input_file -oN vuln.txt -vv"
+        command="sudo nmap -sV -sC -T4 -Pn --script=vulners --script=vuln -iL $input_file -oN vuln.txt -v3"
     elif [ "$full_vuln_extras" = true ]; then
         command="sudo nmap -sV -sC -O -p- -n -Pn -oA fullscan --script=vuln --script=vulners -iL $input_file -oN vuln_extra.txt -vv"
     elif [ "$ftp" = true ]; then
