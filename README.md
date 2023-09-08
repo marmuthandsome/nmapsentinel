@@ -28,7 +28,9 @@ Options:
     -p, --port PORT          Specify a specific port to scan
     --fast-scan              Perform a fast scan
     --full-scan              Perform a full scan
-    --full-scan-slower       Perform a slower full scan
+    --full-scan-slower       Perform a slower full scan (Recommended)
+    --full-vuln              Perform a full scan with vuln (Recommended)
+    --full-vuln-extras       Perform a full scan with extras vuln (Long Time)
     --ftp                    Perform a scanning port 21
     --ssh                    Perform a scanning port 22
     --telnet                 Perform a scanning port 23
