@@ -21,7 +21,7 @@ Nmap Tool is a Bash script that simplifies the process of running Nmap scans wit
 #### Usage
 
 ```bash
-./nmap_tool.sh [options] input_file [output_directory]
+./nmapsentinel.sh [options] input_file
 
 Options:
     -h, --help               Show this help message and exit
