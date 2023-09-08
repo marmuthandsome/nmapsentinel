@@ -41,12 +41,13 @@ Options:
     --rdp                    Perform a scanning port 3389
     --cassandra              Perform a scanning port 9042, 9160
     --port-specific PORT     Specify a specific port to scan (e.g., 21, 22, 23, etc.)
+    -o, --output OUTPUT      Specify the custom output file name
 
 Example:
     ./nmapsentinel.sh --fast-scan input.txt
     ./nmapsentinel.sh --full-scan input.txt
     ./nmapsentinel.sh --port 80 input.txt
-    ./nmapsentinel.sh --port-specific 22 input.txt
+    $script_name --port-specific 22 input.txt -o custom_output.txt
 ```
 
 #### Prerequisites
