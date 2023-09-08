@@ -42,6 +42,7 @@ Options:
     --mysql                  Perform a scanning port 3306
     --rdp                    Perform a scanning port 3389
     --cassandra              Perform a scanning port 9042, 9160
+    --cipher                 Perform a scanning cipher vuln
     --port-specific PORT     Specify a specific port to scan (e.g., 21, 22, 23, etc.)
     -o, --output OUTPUT      Specify the custom output file name
 
