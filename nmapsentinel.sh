@@ -19,7 +19,7 @@ main() {
         █░░█ █░▀░█ █▄▄█ █░░█ ░▀▀▀▄▄ █▀▀ █░░█ ░░█░░ ▀█▀ █░░█ █▀▀ █░░ 
         ▀░░▀ ▀░░░▀ ▀░░▀ █▀▀▀ ▒█▄▄▄█ ▀▀▀ ▀░░▀ ░░▀░░ ▀▀▀ ▀░░▀ ▀▀▀ ▀▀▀
 
-Usage: $script_name [options] input_file
+Usage: ./nmapsentinel.sh [options] input_file
 
 Options:
     -h, --help               Show this help message and exit
@@ -44,10 +44,10 @@ Options:
     -o, --output OUTPUT      Specify the custom output file name
 
 Example:
-    $script_name --fast-scan input.txt
-    $script_name --full-scan input.txt
-    $script_name --port 80 input.txt
-    $script_name --port-specific 22 input.txt -o custom_output.txt
+    ./nmapsentinel.sh --fast-scan input.txt
+    ./nmapsentinel.sh --full-scan input.txt
+    ./nmapsentinel.sh --port 80 input.txt
+    ./nmapsentinel.sh --port-specific 22 input.txt -o custom_output.txt
 EOF
     }
 
