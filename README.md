@@ -47,7 +47,7 @@ Example:
     ./nmapsentinel.sh --fast-scan input.txt
     ./nmapsentinel.sh --full-scan input.txt
     ./nmapsentinel.sh --port 80 input.txt
-    $script_name --port-specific 22 input.txt -o custom_output.txt
+    ./nmapsentinel.sh --port-specific 22 input.txt -o custom_output.txt
 ```
 
 #### Prerequisites
