@@ -40,6 +40,7 @@ Options:
     --mysql                  Perform a scanning port 3306
     --rdp                    Perform a scanning port 3389
     --cassandra              Perform a scanning port 9042, 9160
+    --cipher                 Perform a scanning cipher vuln
     --port-specific PORT     Specify a specific port to scan (e.g., 21, 22, 23, etc.)
     -o, --output OUTPUT      Specify the custom output file name
 
@@ -72,6 +73,7 @@ EOF
     local mysql
     local rdp
     local cassandra
+    local cipher
 
     while [[ $# -gt 0 ]]; do
         case "$1" in
@@ -86,6 +88,10 @@ EOF
             -o|--output)
                 output_file="$2"
                 shift 2
+                ;;
+            --cipher)
+                cipher_scan=true
+                shift
                 ;;
             --fast-scan)
                 fast_scan=true
@@ -183,33 +189,35 @@ EOF
     elif [ "$full_scan_slower" = true ]; then
         command="sudo nmap -sV -sC -O -p- -n -Pn -oA fullscan -iL $input_file -oN $output_file -vv"
     elif [ "$full_vuln" = true ]; then
-        command="sudo nmap -sV -sC -T4 -Pn --script=vulners --script=vuln --script ssl-enum-ciphers -iL $input_file -oN $output_file -v3"
+        command="sudo nmap -sV -T4 -Pn --script=vulners --script=vuln --script ssl-enum-ciphers -iL $input_file -oN $output_file -vv"
     elif [ "$full_vuln_extras" = true ]; then
         command="sudo nmap -sV -sC -O -p- -n -Pn -oA fullscan --script=vuln --script=vulners -iL $input_file -oN $output_file -vv"
     elif [ "$ftp" = true ]; then
-        command="sudo nmap -sV -p21 -sC -A --script ftp-* -iL $input_file -oN $output_file -vv"
+        command="sudo nmap -sV -p21 -sC -A -Pn--script ftp-* -iL $input_file -oN $output_file -vv"
     elif [ "$ssh" = true ]; then
-        command="sudo nmap -p22 -sC -sV --script ssh2-enum-algos --script ssh-hostkey --script-args ssh_hostkey=full --script ssh-auth-methods --script-args="ssh.user=root" -iL $input_file -oN $output_file -vv"
+        command="sudo nmap -p22 -sC -Pn -sV --script ssh2-enum-algos --script ssh-hostkey --script-args ssh_hostkey=full --script ssh-auth-methods --script-args="ssh.user=root" -iL $input_file -oN $output_file -vv"
     elif [ "$telnet" = true ]; then
         command="sudo nmap -n -sV -Pn --script "'*telnet* and safe'" -p 23 -iL $input_file -oN $output_file -vv"
     elif [ "$smtp" = true ]; then
-        command="sudo nmap --script=smtp-commands,smtp-enum-users,smtp-vuln-cve2010-4344,smtp-vuln-cve2011-1720,smtp-vuln-cve2011-1764 -p 25 -iL $input_file -oN $output_file -vv"
+        command="sudo nmap -Pn -sV --script=smtp-commands,smtp-enum-users,smtp-vuln-cve2010-4344,smtp-vuln-cve2011-1720,smtp-vuln-cve2011-1764 -p 25 -iL $input_file -oN $output_file -vv"
     elif [ "$dns" = true ]; then
-        command="sudo nmap -n --script "'(default and *dns*) or fcrdns or dns-srv-enum or dns-random-txid or dns-random-srcport'" -iL $input_file -oN $output_file -vv"
+        command="sudo nmap -Pn -sV -n --script "'(default and *dns*) or fcrdns or dns-srv-enum or dns-random-txid or dns-random-srcport'" -iL $input_file -oN $output_file -vv"
     elif [ "$smb" = true ]; then
-        command="sudo nmap -p 139,445 -vv -Pn --script=smb-vuln-cve2009-3103.nse,smb-vuln-ms06-025.nse,smb-vuln-ms07-029.nse,smb-vuln-ms08-067.nse,smb-vuln-ms10-054.nse,smb-vuln-ms10-061.nse,smb-vuln-ms17-010.nse -iL $input_file -oN $output_file -vv"
+        command="sudo nmap -p 139,445 -vv -Pn --script smb-vuln* --script=smb-vuln-cve2009-3103.nse,smb-vuln-ms06-025.nse,smb-vuln-ms07-029.nse,smb-vuln-ms08-067.nse,smb-vuln-ms10-054.nse,smb-vuln-ms10-061.nse,smb-vuln-ms17-010.nse -iL $input_file -oN $output_file -vv"
     elif [ "$smb_brute" = true ]; then
         command="sudo nmap --script smb-vuln* -Pn -p 139,445 -iL $input_file -oN $output_file -vv"
     elif [ "$snmp" = true ]; then
-        command="sudo nmap --script "'snmp* and not snmp-brute'" -iL $input_file -oN $output_file -vv"
+        command="sudo nmap -Pn -sV --script "'snmp* and not snmp-brute'" -iL $input_file -oN $output_file -vv"
     elif [ "$mssql" = true ]; then
-        command="sudo nmap --script ms-sql-info,ms-sql-empty-password,ms-sql-xp-cmdshell,ms-sql-config,ms-sql-ntlm-info,ms-sql-tables,ms-sql-hasdbaccess,ms-sql-dac,ms-sql-dump-hashes --script-args mssql.instance-port=1433,mssql.username=sa,mssql.password=,mssql.instance-name=MSSQLSERVER -sV -p 1433 -iL $input_file -oN $output_file -vv"
+        command="sudo nmap -Pn --script ms-sql-info,ms-sql-empty-password,ms-sql-xp-cmdshell,ms-sql-config,ms-sql-ntlm-info,ms-sql-tables,ms-sql-hasdbaccess,ms-sql-dac,ms-sql-dump-hashes --script-args mssql.instance-port=1433,mssql.username=sa,mssql.password=,mssql.instance-name=MSSQLSERVER -sV -p 1433 -iL $input_file -oN $output_file -vv"
     elif [ "$mysql" = true ]; then
-        command="sudo nmap --script=mysql-databases.nse,mysql-empty-password.nse,mysql-enum.nse,mysql-info.nse,mysql-variables.nse,mysql-vuln-cve2012-2122.nse -p 3306 -iL $input_file -oN $output_file -vv"
+        command="sudo nmap -Pn -sV --script=mysql-databases.nse,mysql-empty-password.nse,mysql-enum.nse,mysql-info.nse,mysql-variables.nse,mysql-vuln-cve2012-2122.nse -p 3306 -iL $input_file -oN $output_file -vv"
     elif [ "$rdp" = true ]; then
-        command="sudo nmap --script "'rdp-enum-encryption or rdp-vuln-ms12-020 or rdp-ntlm-info'" -p 3389 -T4 -iL $input_file -oN $output_file -vv"
+        command="sudo nmap -sV -Pn --script "'rdp-enum-encryption or rdp-vuln-ms12-020 or rdp-ntlm-info'" -p 3389 -T4 -iL $input_file -oN $output_file -vv"
     elif [ "$cassandra" = true ]; then
-        command="sudo nmap -sV --script cassandra-info -p 9042,9160 -iL $input_file -oN $output_file -vv"
+        command="sudo nmap -sV -Pn --script cassandra-info -p 9042,9160 -iL $input_file -oN $output_file -vv"
+    elif [ "$cipher_scan" = true ]; then
+        command="sudo nmap -sV -Pn --script ssl-enum-ciphers -iL $input_file -oN $output_file -vv"
     elif [ -n "$port" ]; then
         command="sudo nmap -sC -sV -sS -p$port -iL $input_file -oN $output_file -vv"
     elif [ -n "$port_specific" ]; then
