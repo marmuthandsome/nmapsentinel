@@ -207,7 +207,7 @@ EOF
     elif [ "$smb_brute" = true ]; then
         command="sudo nmap --script smb-vuln* -Pn -p 139,445 -iL $input_file -oN $output_file -vv"
     elif [ "$snmp" = true ]; then
-        command="sudo nmap -Pn -sV --script "'snmp* and not snmp-brute'" -iL $input_file -oN $output_file -vv"
+        command="sudo nmap -Pn -sV --script "'snmp* and not snmp-brute'" -p 161,162,10161,10162 -iL $input_file -oN $output_file -vv"
     elif [ "$mssql" = true ]; then
         command="sudo nmap -Pn --script ms-sql-info,ms-sql-empty-password,ms-sql-xp-cmdshell,ms-sql-config,ms-sql-ntlm-info,ms-sql-tables,ms-sql-hasdbaccess,ms-sql-dac,ms-sql-dump-hashes --script-args mssql.instance-port=1433,mssql.username=sa,mssql.password=,mssql.instance-name=MSSQLSERVER -sV -p 1433 -iL $input_file -oN $output_file -vv"
     elif [ "$mysql" = true ]; then
