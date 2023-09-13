@@ -203,7 +203,7 @@ EOF
     elif [ "$dns" = true ]; then
         command="sudo nmap -Pn -sV -n --script "'(default and *dns*) or fcrdns or dns-srv-enum or dns-random-txid or dns-random-srcport'" -iL $input_file -oN $output_file -vv"
     elif [ "$smb" = true ]; then
-        command="sudo nmap -p 139,445 -vv -Pn --script smb-vuln* --script=smb-vuln-cve2009-3103.nse,smb-vuln-ms06-025.nse,smb-vuln-ms07-029.nse,smb-vuln-ms08-067.nse,smb-vuln-ms10-054.nse,smb-vuln-ms10-061.nse,smb-vuln-ms17-010.nse -iL $input_file -oN $output_file -vv"
+        command="sudo nmap -p 139,445 -vv -Pn --script smb-security-mode.nse --script smb2-security-mode --script smb-vuln* --script=smb-vuln-cve2009-3103.nse,smb-vuln-ms06-025.nse,smb-vuln-ms07-029.nse,smb-vuln-ms08-067.nse,smb-vuln-ms10-054.nse,smb-vuln-ms10-061.nse,smb-vuln-ms17-010.nse -iL $input_file -oN $output_file -vv"
     elif [ "$smb_brute" = true ]; then
         command="sudo nmap --script smb-vuln* -Pn -p 139,445 -iL $input_file -oN $output_file -vv"
     elif [ "$snmp" = true ]; then
