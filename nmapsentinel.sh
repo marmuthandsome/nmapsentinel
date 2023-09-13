@@ -32,10 +32,11 @@ Options:
     --ftp                    Perform a scanning port 21
     --ssh                    Perform a scanning port 22
     --telnet                 Perform a scanning port 23
-    --smtp                   Perform a scanning port 25,465,587
+    --smtp                   Perform a scanning port 25, 465, 587
     --dns                    Perform a scanning port 53
-    --smb / --smb-brute      Perform a scanning port 139,445
-    --snmp                   Perform a scanning port 161,162,10161,10162
+    --smb / --smb-brute      Perform a scanning port 139, 445
+    --snmp                   Perform a scanning port 161, 162, 10161, 10162
+    --ldap                   Perform a scanning port 389, 636, 3268, 3269
     --mssql                  Perform a scanning port 1433
     --mysql                  Perform a scanning port 3306
     --rdp                    Perform a scanning port 3389
@@ -74,6 +75,7 @@ EOF
     local rdp
     local cassandra
     local cipher
+    local ldap
 
     while [[ $# -gt 0 ]]; do
         case "$1" in
@@ -161,6 +163,10 @@ EOF
                 cassandra=true
                 shift
                 ;;
+            --ldap)
+                ldap=true
+                shift
+                ;;
             --port-specific)
                 port_specific="$2"
                 shift 2
@@ -189,7 +195,7 @@ EOF
     elif [ "$full_scan_slower" = true ]; then
         command="sudo nmap -sV -sC -O -p- -n -Pn -oA fullscan -iL $input_file -oN $output_file -vv"
     elif [ "$full_vuln" = true ]; then
-        command="sudo nmap -sV -T4 -Pn --script=vulners --script=vuln --script ssl-enum-ciphers -iL $input_file -oN $output_file -vv"
+        command="sudo nmap -sV -T4 -Pn --script=vulners --script=vuln -iL $input_file -oN $output_file -vv"
     elif [ "$full_vuln_extras" = true ]; then
         command="sudo nmap -sV -sC -O -p- -n -Pn -oA fullscan --script=vuln --script=vulners -iL $input_file -oN $output_file -vv"
     elif [ "$ftp" = true ]; then
@@ -218,6 +224,8 @@ EOF
         command="sudo nmap -sV -Pn --script cassandra-info -p 9042,9160 -iL $input_file -oN $output_file -vv"
     elif [ "$cipher_scan" = true ]; then
         command="sudo nmap -sV -Pn --script ssl-enum-ciphers -iL $input_file -oN $output_file -vv"
+    elif [ "$ldap" = true ]; then
+        command="sudo nmap -sV -Pn --script "'ldap* and not brute'" --script ldap-search -p 389,636,3268,3269 -iL $input_file -oN $output_file -vv"
     elif [ -n "$port" ]; then
         command="sudo nmap -sC -sV -sS -p$port -iL $input_file -oN $output_file -vv"
     elif [ -n "$port_specific" ]; then
