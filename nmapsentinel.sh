@@ -227,15 +227,15 @@ Example:
     elif [ "$telnet" = true ]; then
         command="sudo nmap -n -sV -Pn --script \"*telnet* and safe\" -p 23 -iL $input_file -oN $output_file -vv"
     elif [ "$smtp" = true ]; then
-        command="sudo nmap -Pn -sV --script=smtp-commands,smtp-enum-users,smtp-vuln-cve2010-4344,smtp-vuln-cve2011-1720,smtp-vuln-cve2011-1764 -p 25 -iL $input_file -oN $output_file -vv"
+        command="sudo nmap -Pn -sV --script=smtp-commands,smtp-enum-users,smtp-vuln-cve2010-4344,smtp-vuln-cve2011-1720,smtp-vuln-cve2011-1764 -p 25,465,587 -iL $input_file -oN $output_file -vv"
     elif [ "$dns" = true ]; then
-        command="sudo nmap -Pn -sV -n --script '(default and *dns*) or fcrdns or dns-srv-enum or dns-random-txid or dns-random-srcport' -iL $input_file -oN $output_file -vv"
+        command="sudo nmap -Pn -sV -n --script '(default and *dns*) or fcrdns or dns-srv-enum or dns-random-txid or dns-random-srcport' -p 53 -iL $input_file -oN $output_file -vv"
     elif [ "$smb" = true ]; then
         command="sudo nmap -p 139,445 -vv -Pn --script smb-security-mode.nse --script smb2-security-mode --script smb-vuln* --script=smb-vuln-cve2009-3103.nse,smb-vuln-ms06-025.nse,smb-vuln-ms07-029.nse,smb-vuln-ms08-067.nse,smb-vuln-ms10-054.nse,smb-vuln-ms10-061.nse,smb-vuln-ms17-010.nse -iL $input_file -oN $output_file -vv"
     elif [ "$smb_brute" = true ]; then
         command="sudo nmap --script smb-vuln* -Pn -p 139,445 -iL $input_file -oN $output_file -vv"
     elif [ "$snmp" = true ]; then
-        command="sudo nmap -Pn -sV --script \"snmp* and not snmp-brute\" -iL $input_file -oN $output_file -vv"
+        command="sudo nmap -Pn -p 161,162,10161,10162 -sV --script \"snmp* and not snmp-brute\" -iL $input_file -oN $output_file -vv"
     elif [ "$mssql" = true ]; then
         command="sudo nmap -Pn --script ms-sql-info,ms-sql-empty-password,ms-sql-xp-cmdshell,ms-sql-config,ms-sql-ntlm-info,ms-sql-tables,ms-sql-hasdbaccess,ms-sql-dac,ms-sql-dump-hashes --script-args mssql.instance-port=1433,mssql.username=sa,mssql.password=,mssql.instance-name=MSSQLSERVER -sV -p 1433 -iL $input_file -oN $output_file -vv"
     elif [ "$mysql" = true ]; then
@@ -245,7 +245,7 @@ Example:
     elif [ "$cassandra" = true ]; then
         command="sudo nmap -sV -Pn --script cassandra-info -p 9042,9160 -iL $input_file -oN $output_file -vv"
     elif [ "$cipher_scan" = true ]; then
-        command="sudo nmap -sV -Pn --script ssl-enum-ciphers -iL $input_file -oN $output_file -vv"
+        command="sudo nmap -sV -p 80,443 -Pn --script ssl-enum-ciphers -iL $input_file -oN $output_file -vv"
     elif [ "$ldap" = true ]; then
         command="sudo nmap -sV -Pn --script \"ldap* and not brute\" --script ldap-search -p 389,636,3268,3269 -iL $input_file -oN $output_file -vv"
     elif [ -n "$port" ]; then
