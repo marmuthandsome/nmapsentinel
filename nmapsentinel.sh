@@ -56,6 +56,7 @@ Options:
     ${LBLUE}--telnet${RESTORE}                Perform a scanning port 23
     ${LBLUE}--smtp${RESTORE}                  Perform a scanning port 25, 465, 587
     ${LBLUE}--dns${RESTORE}                   Perform a scanning port 53
+    ${LBLUE}--web${RESTORE}                   Perform a scanning port 80, 443
     ${LBLUE}--smb / --smb-brute${RESTORE}     Perform a scanning port 139, 445
     ${LBLUE}--snmp${RESTORE}                  Perform a scanning port 161, 162, 10161, 10162
     ${LBLUE}--ldap${RESTORE}                  Perform a scanning port 389, 636, 3268, 3269
@@ -98,6 +99,7 @@ Example:
     local cassandra
     local cipher
     local ldap
+    local web
 
     while [[ $# -gt 0 ]]; do
         case "$1" in
@@ -115,6 +117,10 @@ Example:
                 ;;
             --cipher)
                 cipher_scan=true
+                shift
+                ;;
+            --web)
+                web=true
                 shift
                 ;;
             --fast-scan)
@@ -248,6 +254,8 @@ Example:
         command="sudo nmap -sV -p 80,443 -Pn --script ssl-enum-ciphers -iL $input_file -oN $output_file -vv"
     elif [ "$ldap" = true ]; then
         command="sudo nmap -sV -Pn --script \"ldap* and not brute\" --script ldap-search -p 389,636,3268,3269 -iL $input_file -oN $output_file -vv"
+    elif [ "$web" = true ]; then
+        command="sudo nmap -T4 --reason -Pn -sV -p 80,443 --script='banner,(http* or ssl*) and not (brute or broadcast or dos or external or http-slowloris* or fuzzer)' -iL $input_file -oN $output_file -vv"
     elif [ -n "$port" ]; then
         command="sudo nmap -sC -sV -sS -p$port -iL $input_file -oN $output_file -vv"
     elif [ -n "$port_specific" ]; then
