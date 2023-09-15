@@ -34,10 +34,11 @@ Options:
     --ftp                    Perform a scanning port 21
     --ssh                    Perform a scanning port 22
     --telnet                 Perform a scanning port 23
-    --smtp                   Perform a scanning port 25,465,587
+    --smtp                   Perform a scanning port 25, 465, 587
     --dns                    Perform a scanning port 53
-    --smb / --smb-brute      Perform a scanning port 139,445
-    --snmp                   Perform a scanning port 161,162,10161,10162
+    --web                    Perform a scanning port 80, 443
+    --smb / --smb-brute      Perform a scanning port 139, 445
+    --snmp                   Perform a scanning port 161, 162, 10161, 10162
     --mssql                  Perform a scanning port 1433
     --mysql                  Perform a scanning port 3306
     --rdp                    Perform a scanning port 3389
